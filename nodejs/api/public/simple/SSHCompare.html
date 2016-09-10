@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <title>SSH Compare</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../css/editormd.css" />
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    <style>
+
+
+        #ssh {
+
+            min-height:400px;
+            text-align: center;
+
+        }
+        #keys {
+
+            width:1200px;
+            margin:0 auto;
+
+        }
+
+        #private,#public {
+
+
+            width:600px;
+            float:left;
+            height:350px;
+        }
+
+
+        #compare {
+
+            height: 30px;
+            width: 90px;
+            display:block;
+            margin:0 auto;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="layout">
+    <header>
+        <h1>SSH Compare</h1>
+    </header>
+    <div id="ssh">
+        <div id="keys">
+        <textarea id="private" style="display:block;" placeholder="Private Key"></textarea>
+        <textarea id="public" style="display:block;" placeholder="Public Key"></textarea>
+         </div>
+
+    </div>
+    <div>
+    <button id="compare" value="compare">Compare</button>
+</div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script>
+
+function compareBtn() {
+    var privateKey = $('#private').val();
+    var publicKey = $('#public').val();
+
+    if(privateKey=="" || publicKey == "") {
+        alert("Please input private key and public key!");
+        return;
+    }
+
+//    $.post('compareSSHKeys', {privateKey: privateKey, publicKey: publicKey}, function (data, status, xhr) {
+//
+//        alert(data);
+//
+//
+//    },'json');
+
+
+    //require : app.use(bodyParser.json());
+    $.ajax({
+
+        url: 'compareSSHKeys',
+        dataType: 'json',
+        data: JSON.stringify({privateKey: privateKey, publicKey: publicKey}),
+        contentType: "application/json; charset=utf-8",
+        type: 'post',
+        success: function (data) {
+
+
+            alert(data);
+
+        },
+        error: function (err) {
+
+            alert(err);
+        }
+    });
+
+
+// require : app.use(bodyParser.urlencoded({extended: true}));
+//    $.ajax({
+//
+//        url : 'compareSSHKeys',
+//        dataType : 'json',
+//        data : {privateKey: privateKey, publicKey: publicKey},
+//        contentType : "application/x-www-form-urlencoded; charset=utf-8",
+//        type : 'post',
+//        success : function(data){
+//
+//
+//            alert(data);
+//
+//        },
+//        error : function(err){
+//
+//            alert(err);
+//        }
+//    });
+//}
+}
+
+    $('#compare').click(compareBtn);
+
+</script>
+</body>
+</html>
